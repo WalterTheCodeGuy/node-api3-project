@@ -10,12 +10,10 @@ router.post('/', validateUser, (req, res) => {
 
   db.insert(userPost)
     .then(post => {
-      res.status(201);
-      res.json(post);
+      res.status(201).json(post);
     })
     .catch(error => {
-      res.status(500);
-      res.json({ errorMessage: 'Sorry, no user posted to server', error });
+      res.status(500).json({ errorMessage: 'Sorry, no user posted to server', error });
     });
 });
 
@@ -28,12 +26,10 @@ router.post('/:id/posts', validatePost, (req, res) => {
   postDB
     .insert(newPost)
     .then(comment => {
-      res.status(200);
-      res.json({ newPost });
+      res.status(200).json({ newPost });
     })
     .catch(error => {
-      res.status(500);
-      res.json({ errorMessage: 'Sorry, not post created on the server', error });
+      res.status(500).json({ errorMessage: 'Sorry, no post created on the server', error });
     });
 });
 
@@ -41,12 +37,10 @@ router.get('/', (req, res) => {
   // do your magic!
   db.get()
     .then(users => {
-      res.status(201);
-      res.json(users);
+      res.status(201).json(users);
     })
     .catch(error => {
-      res.status(500);
-      res.json({ message: 'Sorry, no users found on server', error });
+      res.status(500).json({ message: 'Sorry, no users found on server', error });
     });
 });
 
@@ -57,16 +51,13 @@ router.get('/:id', validateUserId, (req, res) => {
   db.getById(userID)
     .then(user => {
       if (user) {
-        res.status(201);
-        res.json(user);
+        res.status(201).json(user);
       } else {
-        res.status(401);
-        res.json({ message: 'Sorry, no user with that id', error });
+        res.status(401).json({ message: `Sorry, no user with a UserID of ${userID}`, error });
       }
     })
     .catch(error => {
-      res.status(500);
-      res.json({ errorMessage: 'Sorry, no user with ID returned from server', error });
+      res.status(500).json({ errorMessage: `Sorry, no user with UserID of ${userID} returned from server`, error });
     });
 });
 
@@ -76,12 +67,10 @@ router.get('/:id/posts', (req, res) => {
 
   db.getUserPosts(ID)
     .then(posts => {
-      res.status(200);
-      res.json(posts);
+      res.status(200).json(posts);
     })
     .catch(error => {
-      res.status(500);
-      res.json({ errorMessage: 'Sorry, no post id found', error });
+      res.status(500).json({ errorMessage: 'Sorry, no post id found', error });
     });
 });
 
@@ -92,16 +81,13 @@ router.delete('/:id', (req, res) => {
   db.remove(deleteID)
     .then(deletedUser => {
       if (deleteID) {
-        res.status(200);
-        res.json(deletedUser);
+        res.status(200).json(deletedUser);
       } else {
-        res.status(400);
-        res.json({ message: 'Sorry, user not deleted' });
+        res.status(400).json({ message: 'Sorry, user not deleted' });
       }
     })
     .catch(error => {
-      res.status(500);
-      res.json({ errorMessage: 'Sorry, user not deleted from server', error });
+      res.status(500).json({ errorMessage: 'Sorry, user not deleted from server', error });
     });
 });
 
@@ -112,12 +98,10 @@ router.put('/:id', (req, res) => {
 
   db.update(updateID, updatedUser)
     .then(updatedInfo => {
-      res.status(200);
-      res.json(updatedInfo);
+      res.status(200).json(updatedInfo);
     })
     .catch(error => {
-      res.status(500);
-      res.json({ errorMessage: 'Sorry, user not updated on the server', error });
+      res.status(500).json({ errorMessage: 'Sorry, user not updated on the server', error });
     });
 });
 
@@ -130,8 +114,7 @@ function validateUserId(req, res, next) {
     //store as req.user
     next();
   } else {
-    res.status(400);
-    res.json({ message: 'invalid user id' });
+    res.status(400).json({ message: 'invalid user id' });
   }
 }
 
@@ -139,11 +122,9 @@ function validateUserId(req, res, next) {
 function validateUser(req, res, next) {
   // do your magic!
   if (!req.body) {
-    res.status(400);
-    res.json({ message: 'missing user data' });
+    res.status(400).json({ message: 'missing user data' });
   } else if (!req.body.name) {
-    res.status(400);
-    res.json({ message: 'missing required name field' });
+    res.status(400).json({ message: 'missing required name field' });
   } else {
     next();
   }
@@ -152,11 +133,9 @@ function validateUser(req, res, next) {
 function validatePost(req, res, next) {
   // do your magic!
   if (!req.body) {
-    res.status(400);
-    res.json({ message: 'missing post data' });
+    res.status(400).json({ message: 'missing post data' });
   } else if (!req.body.text) {
-    res.status(400);
-    res.json({ message: 'missing required text field' });
+    res.status(400).json({ message: 'missing required text field' });
   } else {
     next();
   }
